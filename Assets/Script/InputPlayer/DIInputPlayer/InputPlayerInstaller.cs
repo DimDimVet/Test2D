@@ -1,10 +1,12 @@
-using Input;
 using Zenject;
 
-public class InputPlayerInstaller : MonoInstaller
+namespace Input
 {
-    public override void InstallBindings()
+    public class InputPlayerInstaller : MonoInstaller
     {
-        Container.Bind<IInput>().To<InputPlayer>().AsSingle().NonLazy();
+        public override void InstallBindings()
+        {
+            Container.Bind<IInput>().To<InputPlayer>().AsSingle().NonLazy();
+        }
     }
 }

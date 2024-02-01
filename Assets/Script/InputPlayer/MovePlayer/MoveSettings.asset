@@ -12,12 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7cabc85ac3e2d4eb5aef5d5f969bf7, type: 3}
   m_Name: MoveSettings
   m_EditorClassIdentifier: 
-  SpeedForward: 8
-  SpeedBack: 5
-  SpeedTurn: 35
-  Weight: 50
-  GroundLayer:
-    serializedVersion: 2
-    m_Bits: 1
-  ShootDelay: 1
+  MoveSpeed: 5
+  JampSpeed: 0.59
+  TagGnd: Gnd
+  GndDistance: 0.1
   IsUpDate: 0
