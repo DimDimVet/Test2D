@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c0c51c0ca228284087a56178e10ef5e, type: 3}
   m_Name: RotatseSetting
   m_EditorClassIdentifier: 
-  RotateSpeed: 5
+  AnglePlus: 45
+  AngleMinus: -45
   IsUpDate: 0

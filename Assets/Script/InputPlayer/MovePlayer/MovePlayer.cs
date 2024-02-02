@@ -12,7 +12,7 @@ namespace Input
         private string tagGnd;
         private RaycastHit2D hit;
         private Vector3 scale;
-        private bool isMoveTrigger, isFlipTrigger;
+        private bool isMoveTrigger;
         private bool isRun = false, isStopRun = false;
 
         private IInput inputData;
@@ -42,7 +42,7 @@ namespace Input
                 isRun = true;
             }
         }
-        void Update()
+        void FixedUpdate()
         {
             if (isStopRun) { return; }
             if (!isRun) { GetRun(); return; }
@@ -51,23 +51,25 @@ namespace Input
         }
         private void Move()
         {
+            scale = transform.localScale;
             if (ScanGND())
             {
                 isMoveTrigger = true;
                 if (inputData.Updata().Jamp > 0)
                 {
-                    rbThisObject.AddForce(transform.up * jampSpeed, ForceMode2D.Impulse);
+                    rbThisObject.velocity = transform.up * jampSpeed;
+                    //rbThisObject.AddForce(transform.up * jampSpeed, ForceMode2D.Impulse);
                 }
                 else
                 {
-                    if (inputData.Updata().Move.x > 0 )
+                    if (inputData.Updata().Move.x > 0)
                     {
-                        if (isFlipTrigger == true && inputData.Updata().Move.x > 0) { Flip(); }
+                        if (scale.x == -1 && inputData.Updata().Move.x > 0) { Flip(); }
                         rbThisObject.velocity = transform.right * moveSpeed;
                     }
-                    if (inputData.Updata().Move.x < 0 )
+                    if (inputData.Updata().Move.x < 0)
                     {
-                        if (isFlipTrigger == false && inputData.Updata().Move.x < 0) { Flip(); }
+                        if (scale.x == 1 && inputData.Updata().Move.x < 0) { Flip(); }
                         rbThisObject.velocity = -transform.right * moveSpeed;
                     }
                 }
@@ -75,30 +77,46 @@ namespace Input
             }
             else
             {
-                if (inputData.Updata().Move.x > 0 && isMoveTrigger)
+                if (inputData.Updata().Move.x > 0 && isMoveTrigger )
                 {
                     isMoveTrigger = false;
-                    if (isFlipTrigger == true && inputData.Updata().Move.x > 0) { Flip(); }
-                    rbThisObject.AddForce(transform.right * moveSpeed / 2, ForceMode2D.Impulse);
+                    if (scale.x == -1 && inputData.Updata().Move.x > 0) { Flip(); }
+                    rbThisObject.velocity = transform.right * jampSpeed;
+                    //rbThisObject.AddForce(transform.right * moveSpeed / 2, ForceMode2D.Impulse);
                 }
-                if (inputData.Updata().Move.x < 0 && isMoveTrigger)
+                if (inputData.Updata().Move.x < 0 && isMoveTrigger )
                 {
                     isMoveTrigger = false;
-                    if (isFlipTrigger == false && inputData.Updata().Move.x < 0) { Flip(); }
-
-                    rbThisObject.AddForce(-transform.right * moveSpeed / 2, ForceMode2D.Impulse);
+                    if (scale.x == 1 && inputData.Updata().Move.x < 0) { Flip(); }
+                    rbThisObject.velocity = -transform.right * jampSpeed;
+                    
+                    //rbThisObject.AddForce(-transform.right * moveSpeed / 2, ForceMode2D.Impulse);
                 }
 
             }
+
+            if (inputData.Updata().Move.x > 0 && isMoveTrigger && inputData.Updata().Jamp > 0)
+            {
+                isMoveTrigger = false;
+                if (scale.x == -1 && inputData.Updata().Move.x > 0) { Flip(); }
+                rbThisObject.velocity = new Vector2(1, 1) * jampSpeed;
+                //rbThisObject.AddForce(transform.right * moveSpeed / 2, ForceMode2D.Impulse);
+            }
+            if (inputData.Updata().Move.x < 0 && isMoveTrigger && inputData.Updata().Jamp > 0)
+            {
+                isMoveTrigger = false;
+                if (scale.x == 1 && inputData.Updata().Move.x < 0) { Flip(); }
+                rbThisObject.velocity = -new Vector2(1, -1) * jampSpeed;
+
+                //rbThisObject.AddForce(-transform.right * moveSpeed / 2, ForceMode2D.Impulse);
+            }
+
         }
         private void Flip()
         {
-            isFlipTrigger = !isFlipTrigger;
             scale = transform.localScale;
             scale.x *= -1;
             transform.localScale = scale;
-
-            //rbThisObject.velocity.magnitude
         }
         private bool ScanGND()
         {
