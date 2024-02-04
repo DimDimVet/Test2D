@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7851888670ae3214397450f6415ee8bb, type: 3}
-  m_Name: ShootPlayerSettings
+  m_Name: ShootEnemySettings
   m_EditorClassIdentifier: 
-  CurrentTime: 0.3
+  CurrentTime: 0.5
   MaxCountClip: 1
   CurrentTimeClip: 1
-  ModeShoot: 0
+  ModeShoot: 1
   IsUpDate: 0

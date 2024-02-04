@@ -18,6 +18,7 @@ namespace Shoot
         private ModeShoot modeShoot;
         private int maxCountClip, currentCountClip;
         private bool isRun = false, isStopRun = false;
+        private int count=0;
         //
         private IInput inputData;
         [Inject]
@@ -35,6 +36,9 @@ namespace Shoot
         }
         private void SetSettings()
         {
+            currentTime = settings.CurrentTime;
+            defaultTime = currentTime;
+
             maxCountClip = settings.MaxCountClip;
             currentCountClip = maxCountClip;
             if (maxCountClip == 1)
@@ -71,6 +75,7 @@ namespace Shoot
                 {
                     if (inputData.Updata().MouseLeftButton != 0)
                     {
+                        count++;
                         ShootBullet();
                         isBullReLoad = true;
                     }
@@ -125,6 +130,7 @@ namespace Shoot
         public virtual void ShootBulletSleeve()
         {
         }
+        
     }
 }
 

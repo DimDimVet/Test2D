@@ -1,18 +1,19 @@
-using Bulls;
 using Pools;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 namespace Shoot
 {
-    public class ShootPlayer : Shoot
+    public class ShootEnemy : Shoot
     {
         [SerializeField] private GameObject prefab;
         [SerializeField] private Transform poolTransform;
 
-        private IPlayerBullPool poolBull;
+        private IEnemyBullPool poolBull;
         [Inject]
-        public void Init(IPlayerBullPool _poolBull)
+        public void Init(IEnemyBullPool _poolBull)
         {
             poolBull = _poolBull;
         }
@@ -29,8 +30,6 @@ namespace Shoot
         public override void ShootBulletSleeve()
         {
         }
-
     }
 }
-
 

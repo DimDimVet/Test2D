@@ -32,6 +32,7 @@ public class Patter : MonoBehaviour
     {
         if (isStopRun) { return; }
         if (!isRun) { GetRun(); }
+        //if (settings.IsUpDate) { SetSettings(); settings.IsUpDate = false; }
     }
     private void FixedUpdate()
     {

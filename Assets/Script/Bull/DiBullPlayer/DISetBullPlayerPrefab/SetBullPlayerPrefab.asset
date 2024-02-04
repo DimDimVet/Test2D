@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7851888670ae3214397450f6415ee8bb, type: 3}
-  m_Name: ShootPlayerSettings
+  m_Script: {fileID: 11500000, guid: a20945188831af74e8347f4722727642, type: 3}
+  m_Name: SetBullPlayerPrefab
   m_EditorClassIdentifier: 
-  CurrentTime: 0.3
-  MaxCountClip: 1
-  CurrentTimeClip: 1
-  ModeShoot: 0
-  IsUpDate: 0
+  BullPlayerPrefab:
+    SetObject: {fileID: 2802863926805157962, guid: fa6f92654cba49542a19e4a349bf612f, type: 3}

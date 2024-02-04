@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7851888670ae3214397450f6415ee8bb, type: 3}
-  m_Name: ShootPlayerSettings
+  m_Script: {fileID: 11500000, guid: 582b99b8e3ccaf648a3fb00756aa2600, type: 3}
+  m_Name: EnemyBulletSettings
   m_EditorClassIdentifier: 
-  CurrentTime: 0.3
-  MaxCountClip: 1
-  CurrentTimeClip: 1
-  ModeShoot: 0
+  TypeBullet: 2
+  TypeTarget: 00000000
+  SpeedBullet: 15
+  KillTime: 1
+  Damage: 1
+  PercentDamage: 50
   IsUpDate: 0

@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7851888670ae3214397450f6415ee8bb, type: 3}
-  m_Name: ShootPlayerSettings
+  m_Script: {fileID: 11500000, guid: 7c0c51c0ca228284087a56178e10ef5e, type: 3}
+  m_Name: EnemyRotatseSetting
   m_EditorClassIdentifier: 
-  CurrentTime: 0.3
-  MaxCountClip: 1
-  CurrentTimeClip: 1
-  ModeShoot: 0
+  AnglePlus: 75
+  AngleMinus: -75
   IsUpDate: 0
