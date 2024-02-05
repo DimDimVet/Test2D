@@ -1,4 +1,3 @@
-using RegistratorObject;
 using System;
 
 namespace RegistratorObject

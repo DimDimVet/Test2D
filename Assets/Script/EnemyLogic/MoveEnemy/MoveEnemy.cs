@@ -1,37 +1,43 @@
+using RegistratorObject;
 using UnityEngine;
+using Zenject;
 
 namespace EnemyLogic
 {
     public class MoveEnemy : MonoBehaviour
     {
-        public GameObject target;
         public Transform[] JampPoint;
         [SerializeField] private MoveEnemySettings settings;
         [SerializeField] private Transform pointOutRay;
-        private float moveSpeed, jampSpeed, stopDistance, gndDistance;
+        private float moveSpeed, jampSpeed, stopDistance, lossDistance, gndDistance;
         private Rigidbody2D rbThisObject;
         private string tagGnd;
         private RaycastHit2D hit;
         private Vector3 scale, direction, directionJamp;
         [SerializeField] private float isComJamp = 0, isComRight = 0;
         private bool isMoveTrigger;
+        private Construction[] targets;
+        private GameObject target;
+        private TypeObject targetType;
         private bool isRun = false, isStopRun = false;
 
-        //private IInput inputData;
-        //[Inject]
-        //public void Init(IInput x)
-        //{
-        //    inputData = x;
-        //}
+        private IScanerExecutor scanerExecutor;
+        [Inject]
+        public void Init(IScanerExecutor s)
+        {
+            scanerExecutor = s;
+        }
         void Start()
         {
             SetSettings();
         }
         private void SetSettings()
         {
+            targetType = settings.TypeObject;
             moveSpeed = settings.MoveSpeed;
             jampSpeed = settings.JampSpeed;
             stopDistance = settings.StopDistance;
+            lossDistance = settings.LossDistance;
             tagGnd = settings.TagGnd;
             gndDistance = settings.GndDistance;
         }
@@ -51,7 +57,23 @@ namespace EnemyLogic
             if (settings.IsUpDate) { SetSettings(); settings.IsUpDate = false; }
             Move();
         }
+        private bool Target()
+        {
+            if (Mathf.Abs(direction.x) >= lossDistance)
+            {
+                scanerExecutor.LossTarget();
+            }
 
+            if (targets == null) { targets = scanerExecutor.GetRezultScaner(); return false; }
+            else
+            {
+                for (int i = 0; i < targets.Length; i++)
+                {
+                    if (targets[i].TypeObject == targetType && targets[i].Hash!=0) { target = targets[i].Object; return true; }
+                }
+            }
+            return false;
+        }
         private void Move()
         {
             SetTriggers();
@@ -90,7 +112,6 @@ namespace EnemyLogic
                     Flip(isComRight);
                     rbThisObject.velocity = -transform.right * jampSpeed;
                 }
-
             }
 
             if (isComRight > 0 && isMoveTrigger && isComJamp > 0)
@@ -105,11 +126,11 @@ namespace EnemyLogic
                 Flip(isComRight);
                 rbThisObject.velocity = -new Vector2(1, -1) * jampSpeed;
             }
-
         }
         private void SetTriggers()
         {
-            direction = gameObject.transform.position - target.transform.position;
+            if (Target()) { direction = gameObject.transform.position - target.transform.position; }
+            else { direction.x = 0;  }
 
             if (direction.x > 0 && direction.x > stopDistance) { isComRight = -1; }
             else if (direction.x < 0 && direction.x < -stopDistance) { isComRight = 1; }

@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8475cbd44010e4797656941341076a, type: 3}
   m_Name: MoveEnemySettings
   m_EditorClassIdentifier: 
-  MoveSpeed: 5
+  TypeObject: 0
+  MoveSpeed: 1
   JampSpeed: 9
   StopDistance: 20.4
+  LossDistance: 35
   TagGnd: Gnd
   GndDistance: 0.114
   IsUpDate: 0

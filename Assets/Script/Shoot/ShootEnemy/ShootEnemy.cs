@@ -1,6 +1,6 @@
+using EnemyLogic;
 using Pools;
-using System.Collections;
-using System.Collections.Generic;
+using RegistratorObject;
 using UnityEngine;
 using Zenject;
 
@@ -10,12 +10,15 @@ namespace Shoot
     {
         [SerializeField] private GameObject prefab;
         [SerializeField] private Transform poolTransform;
+        private Construction[] targets;
 
         private IEnemyBullPool poolBull;
+        private IScanerExecutor scanerExecutor;
         [Inject]
-        public void Init(IEnemyBullPool _poolBull)
+        public void Init(IEnemyBullPool _poolBull, IScanerExecutor s)
         {
             poolBull = _poolBull;
+            scanerExecutor = s;
         }
         public override void Set()
         {
@@ -24,8 +27,21 @@ namespace Shoot
         public override void ShootBullet()
         {
             //CurrentCountClip--;
+            if (Target()) { poolBull.GetObject(gameObject.transform.localScale.x); }
+            Debug.Log(Target());
 
-            poolBull.GetObject(gameObject.transform.localScale.x);
+        }
+        private bool Target()
+        {
+            if (targets == null) { targets = scanerExecutor.GetRezultScaner(); return false; }
+            else
+            {
+                for (int i = 0; i < targets.Length; i++)
+                {
+                    if (targets[i].Hash != 0) { return true; }
+                }
+            }
+            return false;
         }
         public override void ShootBulletSleeve()
         {

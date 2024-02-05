@@ -1,28 +1,29 @@
 using RegistratorObject;
 using UnityEngine;
+using Zenject;
 
 namespace EnemyLogic
 {
-
-    public class ScanerEnemy : MonoBehaviour
+    public class Scaner : MonoBehaviour
     {
         [SerializeField] private ScanerSetting settings;
+        public Construction[] RezultScaner { get { return rezult; } }
         private TypeObject[] detectObject;
-        private string[] nameTag;
         private float distanceScaner;
         private RaycastHit2D[] hit;
-        private Construction[] baseObject, tempData;
-        private Construction tempConstructor;
+        private Construction[] dataList, rezult;
+        Masiv<Construction> massiv;
         private int tempHash;
-        private Masiv<Construction> massiv;
         private bool isRun = false, isStopRun = false;
 
-        //private IInput inputData;
-        //[Inject]
-        //public void Init(IInput x)
-        //{
-        //    inputData = x;
-        //}
+        private IRegistrator data;
+        private IScanerExecutor scanerExecutor;
+        [Inject]
+        public void Init(IRegistrator r, IScanerExecutor s)
+        {
+            data = r;
+            scanerExecutor = s;
+        }
         void Start()
         {
             SetSettings();
@@ -32,13 +33,14 @@ namespace EnemyLogic
             massiv = new Masiv<Construction>();
             detectObject = settings.DetectObject;
             distanceScaner = settings.DistanceScaner;
-
+            detectObject = settings.DetectObject;
         }
         private void GetRun()
         {
             if (!isRun)
             {
-                if (baseObject == null) { baseObject = BaseObject.GetAll(); isRun = true; return; }
+                dataList = data.SetList();
+                if (dataList != null) { isRun = true; return; }
                 isRun = false;
             }
         }
@@ -52,32 +54,46 @@ namespace EnemyLogic
         private void Detect()
         {
             hit = Physics2D.CircleCastAll(gameObject.transform.position, distanceScaner, Vector2.zero);
+
             for (int i = 0; i < hit.Length; i++)
             {
                 tempHash = hit[i].collider.gameObject.GetHashCode();
+                if (tempHash != 0) { Select(tempHash); }
+            }
+        }
+        private void Select(int hash)
+        {
+            if (scanerExecutor.ControlLoss()) { 
+                massiv.Clean(rezult); }
 
-                for (int j = 0; j < baseObject.Length; j++)
+            for (int y = 0; y < dataList.Length; y++)
+            {
+                if (dataList[y].Hash == hash)
                 {
-                    if (baseObject[j].Hash == tempHash) { CreatTempData(baseObject[j]); }
-
+                    if (rezult != null)
+                    {
+                        if (massiv.Compare(rezult, dataList[y])) { return; }
+                    }
+                    else { LoadMassiv(dataList[y]); }
                 }
             }
         }
-        private void CreatTempData(Construction tempConstructor)
+        private void LoadMassiv(Construction data)
         {
-            if (tempData == null) { tempData = new Construction[] { tempConstructor }; for (int i = 0; i < tempData.Length; i++) { Debug.Log(tempData[i].Hash); } }
-            if (massiv.Compare(tempData, tempConstructor))
+            for (int i = 0; i < detectObject.Length; i++)
             {
-                return;
+                if (detectObject[i] == data.TypeObject)
+                {
+                    rezult = massiv.Creat(data, rezult);
+                    scanerExecutor.SetRezultScaner(rezult);
+                }
             }
-            else { tempData = massiv.Creat(tempConstructor, tempData); for (int i = 0; i < tempData.Length; i++) { Debug.Log(tempData[i].Hash); } }
         }
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(gameObject.transform.position, distanceScaner);
         }
-
     }
 }
 

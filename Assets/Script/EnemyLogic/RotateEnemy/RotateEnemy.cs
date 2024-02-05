@@ -1,27 +1,27 @@
-using Input;
-using System.Collections;
-using System.Collections.Generic;
+using RegistratorObject;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Zenject;
 
 namespace EnemyLogic
 {
     public class RotateEnemy : MonoBehaviour
     {
-        public GameObject target;
         [SerializeField] private RotatseSetting settings;
-        //[SerializeField] private Camera cameraComponent;
         [SerializeField] private GameObject childGameObject;
+        private Construction[] targets;
+        private GameObject target;
+        private TypeObject targetType;
         private float anglePlus, angleMinus, angle;
-        private Vector2 currentMousePosition, direction;
-        private Vector3 worldMousePosition, scale, pos;
+        private Vector2 direction;
+        private Vector3 scale;
         private bool isRun = false, isStopRun = false;
 
-        private IInput inputData;
+        private IScanerExecutor scanerExecutor;
         [Inject]
-        public void Init(IInput x)
+        public void Init(IScanerExecutor s)
         {
-            inputData = x;
+            scanerExecutor = s;
         }
         void Start()
         {
@@ -29,6 +29,7 @@ namespace EnemyLogic
         }
         private void SetSettings()
         {
+            targetType = settings.TypeObject;
             anglePlus = settings.AnglePlus;
             angleMinus = settings.AngleMinus;
         }
@@ -46,16 +47,25 @@ namespace EnemyLogic
             if (settings.IsUpDate) { SetSettings(); settings.IsUpDate = false; }
             Rotate();
         }
+        private bool Target()
+        {
+            if (targets == null) { targets = scanerExecutor.GetRezultScaner(); return false; }
+            else
+            {
+                for (int i = 0; i < targets.Length; i++)
+                {
+                    if (targets[i].TypeObject == targetType && targets[i].Hash != 0) { target = targets[i].Object; return true; }
+                }
+            }
+            return false;
+        }
         private void Rotate()
         {
             scale = transform.localScale;
-            //pos = cameraComponent.WorldToScreenPoint(gameObject.transform.position);
-            //if (/*inputData.Updata().MousePosition.x > pos.x &&*/ scale.x < 0) { Flip(); }
-            //if (/*inputData.Updata().MousePosition.x < pos.x &&*/ scale.x > 0) { Flip(); }
 
-            //currentMousePosition = (Vector2)inputData.Updata().MousePosition;
-            //worldMousePosition = cameraComponent.ScreenToWorldPoint(currentMousePosition);
-            direction = target.transform.position - gameObject.transform.position;
+            if (Target()) { direction = target.transform.position - gameObject.transform.position; Flip(direction); }
+            else { return; }
+
             angle = Vector2.SignedAngle(Vector2.right, direction);
 
             if (scale.x < 0)
@@ -75,12 +85,13 @@ namespace EnemyLogic
                 childGameObject.transform.eulerAngles = new Vector3(0, 0, angle);
             }
         }
-        //private void Flip()
-        //{
-        //    scale = transform.localScale;
-        //    scale.x *= -1;
-        //    transform.localScale = scale;
-        //}
+        private void Flip(Vector2 direction)
+        {
+            scale = transform.localScale;
+            if (direction.x > 0){scale.x = 1;}
+            else { scale.x = -1; }
+            transform.localScale = scale;
+        }
     }
 }
 
