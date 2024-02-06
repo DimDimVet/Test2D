@@ -2,22 +2,58 @@ using RegistratorObject;
 
 namespace EnemyLogic
 {
+    public interface IScanerRezult
+    {
+        int Hash { get; set; }
+    }
+    public struct ScanerRezult : IScanerRezult
+    {
+        public int Hash { get; set; }
+        public Construction[] Rezult { get; set; }
+    }
     public class ScanerExecutor : IScanerExecutor
     {
-        private Construction[] rezult;
-        private bool isLoss=false;
-        public void SetRezultScaner(Construction[] _rezult)
+        private ScanerRezult[] scanRezultHash;
+        private MasivScaner<ScanerRezult> massiv = new MasivScaner<ScanerRezult>();
+        private ScanerRezult tempData;
+        private bool isLoss = false;
+        public void SetRezultScaner(Construction[] _rezult, int thisHash)
         {
-            rezult = _rezult;
+            if (scanRezultHash == null)
+            {
+                tempData = new ScanerRezult { Hash = thisHash, Rezult = _rezult };
+                scanRezultHash = new ScanerRezult[] { tempData };
+            }
+            else
+            {
+                for (int i = 0; i < scanRezultHash.Length; i++)
+                {
+                    if (scanRezultHash[i].Hash == thisHash)
+                    {
+                        scanRezultHash[i].Rezult = _rezult;
+                        return;
+                    }
+                }
+                tempData = new ScanerRezult { Hash = thisHash, Rezult = _rezult };
+                scanRezultHash = massiv.Creat(tempData, scanRezultHash);
+            }
         }
-        public Construction[] GetRezultScaner()
+        public Construction[] GetRezultScaner(int thisHash)
         {
-            return rezult;
+            if (scanRezultHash == null) { return null; }
+            for (int i = 0; i < scanRezultHash.Length; i++)
+            {
+                if (scanRezultHash[i].Hash == thisHash)
+                {
+                    return scanRezultHash[i].Rezult;
+                }
+            }
+            return null;
         }
 
         public void LossTarget()
         {
-            isLoss=true;
+            isLoss = true;
         }
 
         public bool ControlLoss()

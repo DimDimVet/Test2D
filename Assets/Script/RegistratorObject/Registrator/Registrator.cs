@@ -7,7 +7,7 @@ namespace RegistratorObject
     public class Registrator : MonoBehaviour
     {
         public TypeObject type;
-        private int thisHash;
+        public int thisHash;
         private IRegistrator registrator;
         [Inject]
         public void Init(IRegistrator r)

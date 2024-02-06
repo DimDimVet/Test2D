@@ -4,8 +4,8 @@ namespace EnemyLogic
 {
     public interface IScanerExecutor
     {
-        Construction[] GetRezultScaner();
-        void SetRezultScaner(Construction[] _rezult);
+        Construction[] GetRezultScaner(int thisHash);
+        void SetRezultScaner(Construction[] _rezult, int thisHash);
         void LossTarget();
         bool ControlLoss();
     }

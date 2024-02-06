@@ -3,7 +3,7 @@ using System;
 
 namespace RegistratorObject
 {
-    public class Masiv<T> where T : IConstruction
+    public class MasivScaner<T> where T : IScanerRezult
     {
         public bool Compare(T[] massivObject, T constructor)
         {

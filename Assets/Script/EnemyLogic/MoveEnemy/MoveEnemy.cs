@@ -9,6 +9,7 @@ namespace EnemyLogic
         public Transform[] JampPoint;
         [SerializeField] private MoveEnemySettings settings;
         [SerializeField] private Transform pointOutRay;
+        private int thisHash;
         private float moveSpeed, jampSpeed, stopDistance, lossDistance, gndDistance;
         private Rigidbody2D rbThisObject;
         private string tagGnd;
@@ -33,6 +34,7 @@ namespace EnemyLogic
         }
         private void SetSettings()
         {
+            thisHash = gameObject.GetHashCode();
             targetType = settings.TypeObject;
             moveSpeed = settings.MoveSpeed;
             jampSpeed = settings.JampSpeed;
@@ -64,7 +66,7 @@ namespace EnemyLogic
                 scanerExecutor.LossTarget();
             }
 
-            if (targets == null) { targets = scanerExecutor.GetRezultScaner(); return false; }
+            if (targets == null) { targets = scanerExecutor.GetRezultScaner(thisHash); return false; }
             else
             {
                 for (int i = 0; i < targets.Length; i++)

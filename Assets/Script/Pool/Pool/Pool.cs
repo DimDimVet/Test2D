@@ -56,6 +56,14 @@ namespace Pools
                 element.Object.transform.rotation = containerTransform.rotation;
             }
         }
+        private void SetTransformPoint(Element element, Transform _containerTransform)
+        {
+            if (element.Object.transform.position != _containerTransform.position)
+            {
+                element.Object.transform.position = _containerTransform.position;
+                element.Object.transform.rotation = _containerTransform.rotation;
+            }
+        }
         private void SetTransformHit(Element element, RaycastHit hit)
         {
             if (element.Object.transform.position != (hit.point + hit.normal * 0.001f))
@@ -71,12 +79,19 @@ namespace Pools
             containerObject[index].Object.gameObject.SetActive(true);
             return containerObject[index].Object;
         }
-        public GameObject GetObjectFabric()
+        public GameObject GetObjectPoint(Transform _containerTransform)
+        {
+            int index = GetQueue();
+            SetTransformPoint(containerObject[index], _containerTransform);
+            containerObject[index].Object.gameObject.SetActive(true);
+            return containerObject[index].Object;
+        }
+        public GameObject GetObjectFabric(Transform _containerTransform)
         {
             int index = ControlQueueFabric(out bool isQueue);
             if (isQueue)
             {
-                SetTransform(containerObject[index]);
+                SetTransformPoint(containerObject[index], _containerTransform);
                 containerObject[index].Object.gameObject.SetActive(true);
                 return containerObject[index].Object;
             }

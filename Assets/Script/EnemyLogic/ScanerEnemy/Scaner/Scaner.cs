@@ -14,6 +14,7 @@ namespace EnemyLogic
         private Construction[] dataList, rezult;
         Masiv<Construction> massiv;
         private int tempHash;
+        private int thisHash;
         private bool isRun = false, isStopRun = false;
 
         private IRegistrator data;
@@ -30,6 +31,7 @@ namespace EnemyLogic
         }
         private void SetSettings()
         {
+            thisHash=gameObject.GetHashCode();
             massiv = new Masiv<Construction>();
             detectObject = settings.DetectObject;
             distanceScaner = settings.DistanceScaner;
@@ -63,13 +65,14 @@ namespace EnemyLogic
         }
         private void Select(int hash)
         {
-            if (scanerExecutor.ControlLoss()) { 
-                massiv.Clean(rezult); }
+            //if (scanerExecutor.ControlLoss()) { 
+            //    massiv.Clean(rezult); }
 
             for (int y = 0; y < dataList.Length; y++)
             {
                 if (dataList[y].Hash == hash)
                 {
+                    LoadMassiv(dataList[y]);
                     if (rezult != null)
                     {
                         if (massiv.Compare(rezult, dataList[y])) { return; }
@@ -85,7 +88,7 @@ namespace EnemyLogic
                 if (detectObject[i] == data.TypeObject)
                 {
                     rezult = massiv.Creat(data, rezult);
-                    scanerExecutor.SetRezultScaner(rezult);
+                    scanerExecutor.SetRezultScaner(rezult, thisHash);
                 }
             }
         }

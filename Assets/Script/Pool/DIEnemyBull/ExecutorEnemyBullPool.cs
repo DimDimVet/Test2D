@@ -15,22 +15,24 @@ public class ExecutorEnemyBullPool : IEnemyBullPool
         enemyBull = _enemyBull;
     }
 
-    public void AddPull(GameObject prefab, Transform containerTransform)
+    private void AddPull(Transform containerTransform)
     {
         Bull rezult = bullFactory.Create();
         //pool = new Pool(prefab, containerTransform);
         pool = new Pool(rezult.gameObject, containerTransform, true);
     }
 
-    public GameObject GetObject(float direction)
+    public GameObject GetObject(float direction, Transform containerTransform)
     {
+        if (pool == null) { AddPull(containerTransform); }
+        Vector3 vector = containerTransform.position;
         enemyBull.SetDirectionPlayer(direction);
-        if (pool.GetObjectFabric() != null) { return pool.GetObjectFabric(); }
+        if (pool.GetObjectFabric(containerTransform) != null) { return pool.GetObjectFabric(containerTransform); }
         else
         {
             Bull rezult = bullFactory.Create();
             pool.NewObjectQueue(rezult.gameObject);
-            return pool.GetObjectFabric();
+            return pool.GetObjectFabric(containerTransform);
         }
     }
 

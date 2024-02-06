@@ -11,7 +11,7 @@ namespace Shoot
         [SerializeField] private GameObject prefab;
         [SerializeField] private Transform poolTransform;
         private Construction[] targets;
-
+        private int thisHash;
         private IEnemyBullPool poolBull;
         private IScanerExecutor scanerExecutor;
         [Inject]
@@ -22,18 +22,17 @@ namespace Shoot
         }
         public override void Set()
         {
-            poolBull.AddPull(prefab, poolTransform);
+            thisHash=gameObject.GetHashCode();
+            //poolBull.AddPull(prefab, poolTransform);
         }
         public override void ShootBullet()
         {
             //CurrentCountClip--;
-            if (Target()) { poolBull.GetObject(gameObject.transform.localScale.x); }
-            Debug.Log(Target());
-
+            if (Target()) { poolBull.GetObject(gameObject.transform.localScale.x, poolTransform); }
         }
         private bool Target()
         {
-            if (targets == null) { targets = scanerExecutor.GetRezultScaner(); return false; }
+            if (targets == null) { targets = scanerExecutor.GetRezultScaner(thisHash); return false; }
             else
             {
                 for (int i = 0; i < targets.Length; i++)

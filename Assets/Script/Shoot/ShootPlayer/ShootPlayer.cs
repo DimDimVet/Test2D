@@ -24,7 +24,7 @@ namespace Shoot
         {
             //CurrentCountClip--;
 
-            poolBull.GetObject(gameObject.transform.localScale.x);
+            poolBull.GetObject(gameObject.transform.localScale.x, poolTransform);
         }
         public override void ShootBulletSleeve()
         {

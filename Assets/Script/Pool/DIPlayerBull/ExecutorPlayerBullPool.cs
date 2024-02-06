@@ -22,15 +22,16 @@ public class ExecutorPlayerBullPool : IPlayerBullPool
         pool = new Pool(rezult.gameObject, containerTransform, true);
     }
 
-    public GameObject GetObject(float direction)
+    public GameObject GetObject(float direction, Transform containerTransform)
     {
         playerBull.SetDirectionPlayer(direction);
-        if (pool.GetObjectFabric() != null) { return pool.GetObjectFabric(); }
+        var tempGameObject = pool.GetObjectFabric(containerTransform);
+        if (tempGameObject != null) { return tempGameObject; }
         else
         {
             Bull rezult = bullFactory.Create();
             pool.NewObjectQueue(rezult.gameObject);
-            return pool.GetObjectFabric();
+            return pool.GetObjectFabric(containerTransform);
         }
     }
 

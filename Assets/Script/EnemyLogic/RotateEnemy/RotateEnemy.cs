@@ -10,6 +10,7 @@ namespace EnemyLogic
         [SerializeField] private RotatseSetting settings;
         [SerializeField] private GameObject childGameObject;
         private Construction[] targets;
+        private int thisHash;
         private GameObject target;
         private TypeObject targetType;
         private float anglePlus, angleMinus, angle;
@@ -29,6 +30,7 @@ namespace EnemyLogic
         }
         private void SetSettings()
         {
+            thisHash = gameObject.GetHashCode();
             targetType = settings.TypeObject;
             anglePlus = settings.AnglePlus;
             angleMinus = settings.AngleMinus;
@@ -49,7 +51,7 @@ namespace EnemyLogic
         }
         private bool Target()
         {
-            if (targets == null) { targets = scanerExecutor.GetRezultScaner(); return false; }
+            if (targets == null) { targets = scanerExecutor.GetRezultScaner(thisHash); return false; }
             else
             {
                 for (int i = 0; i < targets.Length; i++)
