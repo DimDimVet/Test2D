@@ -13,7 +13,6 @@ namespace UI
         [SerializeField] private GameObject buttonPanel;
         [Header("Кнопка Игра")]
         [SerializeField] private Button gameButton;
-        [Header("Указать индекс сцены игры")]
         private int gameSceneIndex;
         [Header("Кнопка Настройка")]
         [SerializeField] private Button settButton;

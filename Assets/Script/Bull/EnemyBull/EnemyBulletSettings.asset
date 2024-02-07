@@ -16,6 +16,7 @@ MonoBehaviour:
   TypeTarget: 00000000
   SpeedBullet: 15
   KillTime: 1
+  DiametrColl: 0.1
   Damage: 1
   PercentDamage: 50
   IsUpDate: 0

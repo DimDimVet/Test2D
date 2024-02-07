@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MoveEnemySettings
   m_EditorClassIdentifier: 
   TypeObject: 0
-  MoveSpeed: 1
+  MoveSpeed: 5
   JampSpeed: 9
   StopDistance: 20.4
   LossDistance: 35

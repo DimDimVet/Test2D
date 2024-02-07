@@ -1,9 +1,11 @@
+using Healt;
 using Input;
 using Pools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 using Zenject;
 using static UnityEngine.UI.CanvasScaler;
 
@@ -26,6 +28,7 @@ namespace Bulls
         [SerializeField] private BulletSettings settings;
         public bool IsForwardPlus { get { return isForwardPlus; }set { isForwardPlus = value; } }
         private Rigidbody2D rbThisObject;
+        private Collider2D collThisObject;
         private TypeBullet typeBullet;
         private TypeTarget[] typeTarget;
         private float speedBullet;
@@ -33,8 +36,16 @@ namespace Bulls
         private float damage, percentDamage;
         private bool isBullKill = true, isShootTriger = true;
         private bool isForwardPlus=true;
-
+        private RaycastHit2D[] hit;
+        private float diametrColl;
         private bool isRun = false, isStopRun = false;
+
+        private IHealt healtExecutor;
+        [Inject]
+        public void Init(IHealt h)
+        {
+            healtExecutor = h;
+        }
 
         void Start()
         {
@@ -49,11 +60,13 @@ namespace Bulls
             defaultTime = settings.KillTime;
             damage = settings.Damage;
             percentDamage = settings.PercentDamage;
+            diametrColl=settings.DiametrColl;
         }
         private void GetRun()
         {
             if (!isRun)
             {
+                collThisObject=GetComponent<Collider2D>();
                 rbThisObject = GetComponent<Rigidbody2D>();
                 if (!(rbThisObject is Rigidbody2D)) { this.gameObject.AddComponent<Rigidbody2D>(); }
                 isRun = true;
@@ -107,7 +120,21 @@ namespace Bulls
         }
         private bool CollisionObject()
         {
+            hit = Physics2D.CircleCastAll(gameObject.transform.position, diametrColl, Vector2.zero);
+            for (int i = 0; i < hit.Length; i++)
+            {
+                //Debug.Log(hit[i].collider.name);
+                if (collThisObject == hit[i]) { continue; }
+                if (hit[i].collider.name == "EnemyShoot") 
+                { return true; }
+            }
+            
             return false; /*DetectObject();*/
+        }
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(gameObject.transform.position, diametrColl);
         }
         public virtual void ReternBullet()
         {

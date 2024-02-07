@@ -14,6 +14,8 @@ public class BulletSettings : ScriptableObject
     public float SpeedBullet = 5f;
     [Header("Время жизни пули")]
     public float KillTime = 5f;
+    [Header("Диаметр коллайдера"), Range(0, 1)]
+    public float DiametrColl = 0.1f;
     [Header("Дамаг")]
     public float Damage = 1f;
     [Header("Процент критического дамага"), Range(0, 100)]
