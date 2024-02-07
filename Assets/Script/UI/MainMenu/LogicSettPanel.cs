@@ -2,50 +2,90 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
-    public class LogicSettPanel : LogicPanel
+    public class LogicSettPanel : MonoBehaviour
     {
+        [SerializeField] private AudioSetting audioSetting;
         [SerializeField] private ScreenSetting screenSetting;
         [SerializeField] private Dropdown screenDropdown;
         [SerializeField] private Slider muzSlider;
         [SerializeField] private Slider effectSlider;
         [SerializeField] private GameObject parentPanel;
+        [Header("Кнопка Назад")]
+        [SerializeField] private Button returnButton;
+        [SerializeField] private GameObject thisPanel;
         private Resolution[] resolutions, tempResolutions;
         private List<string> textScreen;
         private Resolution currentScreen;
+        private AudioData vol;
+        private AudioSource audioSourceButton, audioSourceGnd;
 
-        private float muzVol, effectVol;
-
-        public override void SetSettings()
+        private ILogicMenu logicMenu;
+        [Inject]
+        public void Init(ILogicMenu m)
         {
-            ScreenSet();
-            AudioSet();
+            logicMenu = m;
+        }
+        void Start()
+        {
+            SetSettings();
             SetEventButton();
         }
-        void LateUpdate()
+        public void SetSettings()
+        {
+            audioSourceButton = GetComponent<AudioSource>();
+            audioSourceGnd = gameObject.AddComponent<AudioSource>();
+            if (audioSourceButton == null) { audioSourceButton = gameObject.AddComponent<AudioSource>(); }
+
+            audioSourceButton.clip = audioSetting.AudioClipButton;
+            audioSourceGnd.clip = audioSetting.AudioClipGnd;
+            audioSourceGnd.Play();
+
+            ScreenSet();
+            AudioSet();
+        }
+        public void SetEventButton()
+        {
+            screenDropdown.onValueChanged.AddListener(SetNewResolution);
+            returnButton.onClick.AddListener(ReturnPanel);
+        }
+        void Update()
         {
             ChangeAudio();
         }
         private void ChangeAudio()
         {
-            if (muzSlider.value != muzVol || effectSlider.value != effectVol)
+            if (muzSlider.value != vol.MuzVol || effectSlider.value != vol.EfectVol)
             {
-                muzVol = muzSlider.value;
-                effectVol = effectSlider.value;
-                SetNewAudio(muzVol, effectVol);
+                vol.MuzVol = muzSlider.value;
+                vol.EfectVol = effectSlider.value;
+                logicMenu.SetAudioParametr(vol);
+                AudioSet();
             }
         }
-        public void SetEventButton()
+        private void AudioSet()
         {
-            screenDropdown.onValueChanged.AddListener(SetNewResolution);
+            vol = new AudioData();
+            vol = logicMenu.GetAudioParametr();
+            
+            audioSourceButton.volume = vol.EfectVol;
+            if (audioSourceGnd != null) { audioSourceGnd.volume = vol.MuzVol; }
+
+            muzSlider.value = vol.MuzVol;
+            effectSlider.value = vol.EfectVol;
+        }
+        public void AudioClick()
+        {
+            audioSourceButton.Play();
         }
         private void ScreenSet()
         {
             //Screen
             if (screenSetting == null) { print($"Нет ScreenSetting"); return; }
-            currentScreen = screenSetting.GetResolution();
+            currentScreen = logicMenu.GetResolution();
             SetCurrentResolution(currentScreen);
 
             textScreen = new List<string>();
@@ -71,21 +111,12 @@ namespace UI
                 }
             }
         }
-        private void AudioSet()
-        {
-            //Audio
-            AudioSetting.GetAudioParametr();
-            muzVol = AudioSetting.MuzVol;
-            effectVol = AudioSetting.EfectVol;
-
-            muzSlider.value = muzVol;
-            effectSlider.value = effectVol;
-        }
+        
         private void SetNewResolution(int indexDrop)
         {
             currentScreen.width = resolutions[indexDrop].width;
             currentScreen.height = resolutions[indexDrop].height;
-            screenSetting.SetResolution(currentScreen);
+            logicMenu.SetResolution(currentScreen);
 
             SetCurrentResolution(currentScreen);
         }
@@ -101,11 +132,6 @@ namespace UI
             Screen.SetResolution(_currentScreen.width, _currentScreen.height, fullScreen);
         }
 
-        private void SetNewAudio(float newMuz, float newEffect)
-        {
-            AudioSetting.SetAudioParametr(newMuz, newEffect);
-            //UpDateAudioParametr(); передать новые установки звука
-        }
         private Resolution[] CreatResolution(Resolution intObject, Resolution[] massivObject)
         {
             if (massivObject != null)
@@ -121,12 +147,12 @@ namespace UI
                 return massivObject;
             }
         }
-        public override void ReturnPanel()
+        public void ReturnPanel()
         {
             AudioClick();
-            if (ThisPanel != null)
+            if (thisPanel != null)
             { 
-                ThisPanel.SetActive(false);
+                thisPanel.SetActive(false);
                 parentPanel.SetActive(true);
             }
         }

@@ -18,18 +18,18 @@ namespace UI
         [Header("Звуковой файл - фон")]
         public AudioClip AudioClipGnd;
 
-        public void SetAudioParametr(float muzVol, float efectVol)
-        {
-            PlayerPrefs.SetFloat("CurrentMuzVol", muzVol);
-            PlayerPrefs.SetFloat("CurrentEfectVol", efectVol);
-            MuzVol = muzVol;
-            EfectVol = efectVol;
-        }
-        public void GetAudioParametr()
-        {
-            MuzVol = PlayerPrefs.GetFloat("CurrentMuzVol");
-            EfectVol = PlayerPrefs.GetFloat("CurrentEfectVol");
-        }
+        //public void SetAudioParametr(float muzVol, float efectVol)
+        //{
+        //    PlayerPrefs.SetFloat("CurrentMuzVol", muzVol);
+        //    PlayerPrefs.SetFloat("CurrentEfectVol", efectVol);
+        //    MuzVol = muzVol;
+        //    EfectVol = efectVol;
+        //}
+        //public void GetAudioParametr()
+        //{
+        //    MuzVol = PlayerPrefs.GetFloat("CurrentMuzVol");
+        //    EfectVol = PlayerPrefs.GetFloat("CurrentEfectVol");
+        //}
     }
 }
 

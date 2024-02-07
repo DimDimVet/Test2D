@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
-    public class LogicButtonMainMenu : LogicPanel
+    public class LogicButtonMainMenu : MonoBehaviour
     {
+        [SerializeField] private AudioSetting audioSetting;
         [SerializeField] private SceneSetting sceneSetting;
         [Header("Указать ButtonPanel")]
         [SerializeField] private GameObject buttonPanel;
@@ -19,28 +21,43 @@ namespace UI
         [Header("Кнопка Выход")]
         [SerializeField] private Button exitButton;
         private AudioSource audioSourceGnd;
+        private AudioSource audioSourceButton;
+        private AudioData vol;
 
-        public override void SetSettings()
+        private ILogicMenu logicMenu;
+        [Inject]
+        public void Init(ILogicMenu m)
+        {
+            logicMenu = m;
+        }
+        void Start()
+        {
+            SetSettings();
+            SetEventButton();
+        }
+        public void SetSettings()
         {
             if (sceneSetting != null & gameButton != null & settButton != null &
             exitButton != null)
             {
                 gameSceneIndex = sceneSetting.GameSceneIndex;
+                vol = new AudioData();
                 SetEventButton();
                 SetPanel();
             }
             else { return; }
 
-            if (AudioSetting != null)
+            if (audioSetting != null)
             {
-                //audioSourceButton = gameObject.AddComponent<AudioSource>();
-                audioSourceGnd = gameObject.AddComponent<AudioSource>();
-                //audioSourceButton.clip = AudioSetting.AudioClipButton;
-                audioSourceGnd.clip = AudioSetting.AudioClipGnd;
-                //audioSourceButton.volume = (AudioSetting.EfectVol);
-                audioSourceGnd.volume = (AudioSetting.MuzVol);
+                audioSourceButton = gameObject.AddComponent<AudioSource>();
+                audioSourceButton.clip = audioSetting.AudioClipButton;
+                vol = logicMenu.GetAudioParametr();
+                audioSourceButton.volume = vol.EfectVol;
             }
-            audioSourceGnd.Play();
+        }
+        public void AudioClick()
+        {
+            audioSourceButton.Play();
         }
         private void SetEventButton()
         {
