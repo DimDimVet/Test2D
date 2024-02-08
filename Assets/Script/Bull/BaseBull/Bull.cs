@@ -1,6 +1,8 @@
+using Codice.Utils;
 using Healt;
 using Input;
 using Pools;
+using RegistratorObject;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,7 +28,7 @@ namespace Bulls
     public class Bull : MonoBehaviour
     {
         [SerializeField] private BulletSettings settings;
-        public bool IsForwardPlus { get { return isForwardPlus; }set { isForwardPlus = value; } }
+        public bool IsForwardPlus { get { return isForwardPlus; } set { isForwardPlus = value; } }
         private Rigidbody2D rbThisObject;
         private Collider2D collThisObject;
         private TypeBullet typeBullet;
@@ -35,15 +37,20 @@ namespace Bulls
         private float killTime, defaultTime;
         private float damage, percentDamage;
         private bool isBullKill = true, isShootTriger = true;
-        private bool isForwardPlus=true;
+        private bool isForwardPlus = true;
         private RaycastHit2D[] hit;
         private float diametrColl;
+        private Construction[] dataList;
+        private int tempHash;
+        private int thisHash;
         private bool isRun = false, isStopRun = false;
 
+        private IRegistrator data;
         private IHealt healtExecutor;
         [Inject]
-        public void Init(IHealt h)
+        public void Init(IHealt h, IRegistrator r)
         {
+            data = r;
             healtExecutor = h;
         }
 
@@ -53,23 +60,28 @@ namespace Bulls
         }
         private void SetSettings()
         {
+            thisHash = gameObject.GetHashCode();
             typeBullet = settings.TypeBullet;
-            typeTarget=settings.TypeTarget;
+            typeTarget = settings.TypeTarget;
             speedBullet = settings.SpeedBullet;
             killTime = settings.KillTime;
             defaultTime = settings.KillTime;
             damage = settings.Damage;
             percentDamage = settings.PercentDamage;
-            diametrColl=settings.DiametrColl;
+            diametrColl = settings.DiametrColl;
         }
         private void GetRun()
         {
             if (!isRun)
             {
-                collThisObject=GetComponent<Collider2D>();
+                collThisObject = GetComponent<Collider2D>();
                 rbThisObject = GetComponent<Rigidbody2D>();
                 if (!(rbThisObject is Rigidbody2D)) { this.gameObject.AddComponent<Rigidbody2D>(); }
-                isRun = true;
+
+                dataList = data.SetList();
+                if (dataList != null) { isRun = true; return; }
+
+                isRun = false;
             }
         }
         private void FixedUpdate()
@@ -121,15 +133,17 @@ namespace Bulls
         private bool CollisionObject()
         {
             hit = Physics2D.CircleCastAll(gameObject.transform.position, diametrColl, Vector2.zero);
-            for (int i = 0; i < hit.Length; i++)
+            if (hit != null)
             {
-                //Debug.Log(hit[i].collider.name);
-                if (collThisObject == hit[i]) { continue; }
-                if (hit[i].collider.name == "EnemyShoot") 
-                { return true; }
+                for (int i = 0; i < hit.Length; i++)
+                {
+                    tempHash = hit[i].collider.gameObject.GetHashCode();
+                    if (tempHash == thisHash) { return false; }
+                    if (tempHash != 0) { healtExecutor.SetDamage(tempHash, 1); return true; }
+                }
             }
-            
-            return false; /*DetectObject();*/
+
+            return false;
         }
         private void OnDrawGizmosSelected()
         {

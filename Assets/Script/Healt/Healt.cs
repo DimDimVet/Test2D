@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UI;
 using UnityEngine;
 using Zenject;
 
@@ -9,7 +6,7 @@ namespace Healt
     public class Healt : MonoBehaviour
     {
         [SerializeField] private HealtSetting settingsHealt;
-        private int healtCount, costObject;
+        private int healtCount, maxHealt, costObject;
         private int thisHash;
         private bool isRun = false, isStopRun = false;
 
@@ -21,28 +18,26 @@ namespace Healt
         }
         private void OnEnable()
         {
-            healtExecutor.OnGetDamage += Test;
+            healtExecutor.OnGetDamage += ControlDamage;
         }
         void Start()
         {
             SetSettings();
-            healtExecutor.SetDamage(1,2);
-        }
-        private void Test(int getHash, int damage)
-        {
-            Debug.Log($"tst{getHash}--{damage}");
         }
         private void SetSettings()
         {
+            thisHash = gameObject.GetHashCode();
             healtCount = settingsHealt.HealtCount;
+            maxHealt = healtCount;
             costObject = settingsHealt.CostObject;
-            thisHash=gameObject.GetHashCode();
+            healtExecutor.StatisticHealt(thisHash, healtCount, maxHealt);
         }
         private void GetRun()
         {
             if (!isRun)
             {
-                isRun=true;
+                
+                isRun = true;
             }
         }
         void Update()
@@ -52,12 +47,16 @@ namespace Healt
             //if (settings.IsUpDate) { SetSettings(); settings.IsUpDate = false; }
         }
         private void ControlDamage(int getHash, int damage)
-        { 
-
+        {
+          if (thisHash == getHash && !isStopRun)
+            {
+                if (healtCount > 0) { healtCount = healtCount - damage; healtExecutor.StatisticHealt(getHash, healtCount, maxHealt); }
+                if (healtCount <= 0) { healtExecutor.DeadObject(getHash, costObject); isStopRun = true; }
+            }
         }
         private void Healing(int getHash, int healing)
         {
-            
+
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Input
         [SerializeField] private RotatseSetting settings;
         [SerializeField] private Camera cameraComponent;
         [SerializeField] private GameObject childGameObject;
+        [SerializeField] private GameObject nonObjectFlip;
         private float anglePlus, angleMinus, angle;
         private Vector2 currentMousePosition, direction;
         private Vector3 worldMousePosition, scale, pos;

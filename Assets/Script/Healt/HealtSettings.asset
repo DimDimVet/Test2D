@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25c52397e16a2f14ab0e1a73df2af219, type: 3}
   m_Name: HealtSettings
   m_EditorClassIdentifier: 
-  HealtCount: 1000
+  HealtCount: 50
   CostObject: 1
   TypeBullets: 

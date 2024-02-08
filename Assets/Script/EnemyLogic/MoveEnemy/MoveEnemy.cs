@@ -61,11 +61,6 @@ namespace EnemyLogic
         }
         private bool Target()
         {
-            if (Mathf.Abs(direction.x) >= lossDistance)
-            {
-                scanerExecutor.LossTarget();
-            }
-
             if (targets == null) { targets = scanerExecutor.GetRezultScaner(thisHash); return false; }
             else
             {

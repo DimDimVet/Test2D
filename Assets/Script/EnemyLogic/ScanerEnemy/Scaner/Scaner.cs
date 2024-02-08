@@ -12,7 +12,7 @@ namespace EnemyLogic
         private float distanceScaner;
         private RaycastHit2D[] hit;
         private Construction[] dataList, rezult;
-        Masiv<Construction> massiv;
+        private Masiv<Construction> massiv;
         private int tempHash;
         private int thisHash;
         private bool isRun = false, isStopRun = false;
@@ -65,9 +65,6 @@ namespace EnemyLogic
         }
         private void Select(int hash)
         {
-            //if (scanerExecutor.ControlLoss()) { 
-            //    massiv.Clean(rezult); }
-
             for (int y = 0; y < dataList.Length; y++)
             {
                 if (dataList[y].Hash == hash)
