@@ -44,7 +44,6 @@ namespace Healt
         {
             if (isStopRun) { return; }
             if (!isRun) { GetRun(); }
-            //if (settings.IsUpDate) { SetSettings(); settings.IsUpDate = false; }
         }
         private void ControlDamage(int getHash, int damage)
         {

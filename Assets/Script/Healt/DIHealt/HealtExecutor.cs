@@ -8,12 +8,16 @@ namespace Healt
     {
         private Construction[] dataList, rezult;
         private Masiv<Construction> massiv;
+        private int costCount=0;
 
+        public Action<int> OnStatisticScore { get { return onStatisticScore; } set { onStatisticScore = value; } }
+        private Action<int> onStatisticScore;
         public Action<int, int> OnGetDamage { get { return onGetDamage; } set { onGetDamage = value; } }
         private  Action<int, int> onGetDamage;
-
         public Action<int, int, int> OnStatisticHealt { get { return onStatisticHealt; } set { onStatisticHealt = value; } }
         private Action<int, int, int> onStatisticHealt;
+        public Action<int, bool> OnIsDead { get { return onIsDead; } set { onIsDead = value; } }
+        private Action<int, bool> onIsDead;
         //
         private IRegistrator data;
         [Inject]
@@ -38,11 +42,21 @@ namespace Healt
         {
             onStatisticHealt?.Invoke(getHash, currentHealt, maxHealt);
         }
+        public void StatisticScore(int cost)
+        {
+            costCount += cost;
+            onStatisticScore?.Invoke(costCount);
+        }
         public void DeadObject(int getHash, int costObject)
         {
             for (int i = 0; i < dataList.Length; i++)
             {
-                if (dataList[i].Hash == getHash) { dataList[i].isDead=true; }
+                if (dataList[i].Hash == getHash) 
+                { 
+                    dataList[i].isDead=true;
+                    onIsDead?.Invoke(getHash, true);
+                    StatisticScore(costObject);
+                }
             }
         }
     }

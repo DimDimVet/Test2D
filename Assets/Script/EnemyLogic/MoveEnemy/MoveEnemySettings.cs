@@ -12,8 +12,6 @@ public class MoveEnemySettings : ScriptableObject
     public float JampSpeed = 5f;
     [Header("Стоп дистанция до цели"), Range(0, 50)]
     public float StopDistance = 5f;
-    [Header("Растояние потери цели"), Range(0, 50)]
-    public float LossDistance = 25f;
 
     [Header("Указать слой GND")]
     public string TagGnd="Gnd";

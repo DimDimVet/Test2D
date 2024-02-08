@@ -1,3 +1,4 @@
+using Healt;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -11,15 +12,22 @@ namespace UI
         [SerializeField] private Button menuButton;
         [SerializeField] private GameObject gndPanel;
         [SerializeField] private GameObject buttonLvlPanel;
+        [SerializeField] private Text scoreText;
         private AudioSource audioSourceGnd;
         private AudioSource audioSourceButton;
         private AudioData vol;
 
+        private IHealt healtExecutor;
         private ILogicMenu logicMenu;
         [Inject]
-        public void Init(ILogicMenu m)
+        public void Init(ILogicMenu m, IHealt h)
         {
             logicMenu = m;
+            healtExecutor = h;
+        }
+        private void OnEnable()
+        {
+            healtExecutor.OnStatisticScore += StatisticScore;
         }
         void Start()
         {
@@ -47,6 +55,10 @@ namespace UI
         private void SetEventButton()
         {
             menuButton.onClick.AddListener(StartButtonPanel);
+        }
+        private void StatisticScore(int score)
+        {
+            scoreText.text = $"{score}";
         }
         private void StartButtonPanel()
         {

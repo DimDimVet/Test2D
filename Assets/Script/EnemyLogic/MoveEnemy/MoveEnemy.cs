@@ -1,3 +1,4 @@
+using Healt;
 using RegistratorObject;
 using UnityEngine;
 using Zenject;
@@ -10,23 +11,29 @@ namespace EnemyLogic
         [SerializeField] private MoveEnemySettings settings;
         [SerializeField] private Transform pointOutRay;
         private int thisHash;
-        private float moveSpeed, jampSpeed, stopDistance, lossDistance, gndDistance;
+        private float moveSpeed, jampSpeed, stopDistance,  gndDistance;
         private Rigidbody2D rbThisObject;
         private string tagGnd;
         private RaycastHit2D hit;
         private Vector3 scale, direction, directionJamp;
-        [SerializeField] private float isComJamp = 0, isComRight = 0;
+        private float isComJamp = 0, isComRight = 0;
         private bool isMoveTrigger;
         private Construction[] targets;
         private GameObject target;
         private TypeObject targetType;
         private bool isRun = false, isStopRun = false;
 
+        private IHealt healtExecutor;
         private IScanerExecutor scanerExecutor;
         [Inject]
-        public void Init(IScanerExecutor s)
+        public void Init(IScanerExecutor s, IHealt h)
         {
             scanerExecutor = s;
+            healtExecutor = h;
+        }
+        private void OnEnable()
+        {
+            healtExecutor.OnIsDead += IsDead;
         }
         void Start()
         {
@@ -39,7 +46,6 @@ namespace EnemyLogic
             moveSpeed = settings.MoveSpeed;
             jampSpeed = settings.JampSpeed;
             stopDistance = settings.StopDistance;
-            lossDistance = settings.LossDistance;
             tagGnd = settings.TagGnd;
             gndDistance = settings.GndDistance;
         }
@@ -58,6 +64,10 @@ namespace EnemyLogic
             if (!isRun) { GetRun(); return; }
             if (settings.IsUpDate) { SetSettings(); settings.IsUpDate = false; }
             Move();
+        }
+        private void IsDead(int getHash, bool isDead)
+        {
+            if (thisHash == getHash) { isStopRun = isDead; }
         }
         private bool Target()
         {

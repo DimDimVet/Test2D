@@ -30,6 +30,7 @@ namespace RegistratorObject
         {
             Masiv<Construction> tempMassiv = new Masiv<Construction>();
             listData = GetData();
+            if (temp != null) { tempMassiv.Clean(temp); }
             for (int i = 0; i < listData.Count; i++)
             {
                 if (listData[i].Hash!=0)

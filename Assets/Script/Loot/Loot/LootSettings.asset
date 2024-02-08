@@ -9,14 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 582b99b8e3ccaf648a3fb00756aa2600, type: 3}
-  m_Name: EnemyBulletSettings
+  m_Script: {fileID: 11500000, guid: e43452de3af883e48ba5c1ddfd3ff9c9, type: 3}
+  m_Name: LootSettings
   m_EditorClassIdentifier: 
-  TypeBullet: 2
-  TypeTarget: 0000000002000000
-  SpeedBullet: 15
-  KillTime: 2
-  DiametrColl: 0.05
-  Damage: 1
-  PercentDamage: 50
-  IsUpDate: 0
+  Healt: 100

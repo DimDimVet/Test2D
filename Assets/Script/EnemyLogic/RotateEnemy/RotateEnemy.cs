@@ -1,3 +1,4 @@
+using Healt;
 using RegistratorObject;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,11 +19,17 @@ namespace EnemyLogic
         private Vector3 scale;
         private bool isRun = false, isStopRun = false;
 
+        private IHealt healtExecutor;
         private IScanerExecutor scanerExecutor;
         [Inject]
-        public void Init(IScanerExecutor s)
+        public void Init(IScanerExecutor s, IHealt h)
         {
             scanerExecutor = s;
+            healtExecutor = h;
+        }
+        private void OnEnable()
+        {
+            healtExecutor.OnIsDead += IsDead;
         }
         void Start()
         {
@@ -48,6 +55,10 @@ namespace EnemyLogic
             if (!isRun) { GetRun(); }
             if (settings.IsUpDate) { SetSettings(); settings.IsUpDate = false; }
             Rotate();
+        }
+        private void IsDead(int getHash, bool isDead)
+        {
+            if (thisHash == getHash) { isStopRun = isDead; }
         }
         private bool Target()
         {

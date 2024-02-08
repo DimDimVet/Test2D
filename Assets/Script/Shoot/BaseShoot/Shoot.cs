@@ -1,3 +1,4 @@
+using Healt;
 using Input;
 using UnityEngine;
 using Zenject;
@@ -12,19 +13,27 @@ namespace Shoot
     public class Shoot : MonoBehaviour
     {
         public int CurrentCountClip { get { return currentCountClip; } set { currentCountClip = value; } }
+        public int ThisHash { get { return thisHash; } }
         [SerializeField] private ShootSettings settings;
         private float currentTime, defaultTime, currentTimeClip, defaultTimeClip;
         private bool isBullReLoad = false, isClipReLoad = false, isTrigerSleeve = true;
         private ModeShoot modeShoot;
         private int maxCountClip, currentCountClip;
+        private int thisHash;
         private bool isRun = false, isStopRun = false;
         private int count=0;
         //
+        private IHealt healtExecutor;
         private IInput inputData;
         [Inject]
-        public void Init(IInput i)
+        public void Init(IInput i, IHealt h)
         {
             inputData = i;
+            healtExecutor = h;
+        }
+        private void OnEnable()
+        {
+            healtExecutor.OnIsDead += IsDead;
         }
         void Start()
         {
@@ -36,6 +45,8 @@ namespace Shoot
         }
         private void SetSettings()
         {
+            thisHash = gameObject.GetHashCode();
+
             currentTime = settings.CurrentTime;
             defaultTime = currentTime;
 
@@ -66,6 +77,10 @@ namespace Shoot
             if (!isRun) { GetRun(); }
             if (settings.IsUpDate) { SetSettings(); settings.IsUpDate = false; }
             ShootActiv();
+        }
+        private void IsDead(int getHash, bool isDead)
+        {
+            if (thisHash == getHash) { isStopRun = isDead; }
         }
         private void ShootActiv()
         {
