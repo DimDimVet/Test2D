@@ -1,3 +1,4 @@
+using Healt;
 using UnityEngine;
 
 namespace RegistratorObject
@@ -10,6 +11,8 @@ namespace RegistratorObject
         public GameObject Object;
         public int ParentHashObject;
         public bool isDead;
+        public HealtPlayer HealtPlayer;
+        public HealtEnemy HealtEnemy;
     }
 }
 

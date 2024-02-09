@@ -4,5 +4,6 @@
     {
         int Hash { get; set; }
         TypeObject TypeObject { get; set; }
+
     }
 }

@@ -20,9 +20,14 @@ namespace Loot
         //}
         public override void Executor(Construction player)
         {
+            if (player.TypeObject == TypeObject.Player)
+            {
+                player.HealtPlayer.Healing(player.Hash, Healt);
+            }
         }
         public override void ReternLoot()
         {
+            gameObject.SetActive(false);
             //poolBull.ReternObject(this.gameObject.GetHashCode());
         }
         public class Factory : PlaceholderFactory<HealtLoot>

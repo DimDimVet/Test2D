@@ -1,3 +1,4 @@
+using PlasticPipe.PlasticProtocol.Server.Stubs;
 using RegistratorObject;
 using UnityEngine;
 using Zenject;
@@ -6,12 +7,14 @@ namespace Loot
 {
     public class Loot : MonoBehaviour
     {
+        public int Healt { get { return healt; } }
         [SerializeField] private LootSettings lootSettings;
         private RaycastHit2D[] hit;
         private float diametrColl;
         private int tempHash;
+        private int healt;
         private Construction[] dataList;
-        private bool isStopRun = false;
+        private bool isRun = false, isStopRun = false;
 
         private IRegistrator data;
         [Inject]
@@ -25,12 +28,22 @@ namespace Loot
         }
         private void SetSettings()
         {
-            if (dataList == null) { dataList = data.SetList(); }
-            diametrColl=lootSettings.DiametrColl;
+            diametrColl = lootSettings.DiametrColl;
+            healt = lootSettings.Healt;
+        }
+        private void GetRun()
+        {
+            if (!isRun)
+            {
+                dataList = data.SetList();
+                if (dataList != null) { isRun = true; return; }
+                isRun = false;
+            }
         }
         void Update()
         {
             if (isStopRun) { return; }
+            if (!isRun) { GetRun(); }
             CollisionObject();
 
         }
@@ -54,12 +67,15 @@ namespace Loot
         }
         private void FindPlayer(int hash)
         {
-            if (hash == 0) { return; }
+            if (hash == 0 || dataList==null) { return; }
+
             for (int i = 0; i < dataList.Length; i++)
             {
-                if (dataList[i].TypeObject == TypeObject.Player) { Executor(dataList[i]); }
+                if (dataList[i].Hash==hash & dataList[i].TypeObject == TypeObject.Player) 
+                { Executor(dataList[i]);}
             }
             ReternLoot();
+            
         }
         public virtual void Executor(Construction player)
         {

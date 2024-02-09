@@ -53,9 +53,18 @@ namespace Healt
                 if (healtCount <= 0) { healtExecutor.DeadObject(getHash, costObject); isStopRun = true; }
             }
         }
-        private void Healing(int getHash, int healing)
+        public void Healing(int getHash, int healing)
         {
-
+            if (thisHash == getHash & healtCount > 0)
+            {
+                healtCount = healtCount + healing;
+                if (healtCount > maxHealt) 
+                {
+                    healtCount= maxHealt;
+                    healtExecutor.StatisticHealt(getHash, healtCount, maxHealt);
+                }
+            }
+            
         }
     }
 }

@@ -1,3 +1,4 @@
+using Healt;
 using UnityEngine;
 using Zenject;
 
@@ -17,16 +18,17 @@ namespace RegistratorObject
 
         void Start()
         {
-            thisHash=gameObject.GetHashCode();  
+            thisHash=gameObject.GetHashCode();
             Construction element = new Construction
             {
                 Hash = thisHash,
                 TypeObject = type,
-                Object=gameObject
+                Object = gameObject,
+                HealtEnemy = GetComponent<HealtEnemy>(),
+                HealtPlayer= GetComponent<HealtPlayer>()
             };
             registrator.SetData(element);
         }
-
     }
 }
 

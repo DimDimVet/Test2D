@@ -6,7 +6,7 @@ namespace Loot
     public class LootSettings : ScriptableObject
     {
         [Header("Здоровье")]
-        public float Healt = 1f;
+        public int Healt = 1;
         [Header("Диаметр коллайдера"), Range(0, 1)]
         public float DiametrColl = 0.1f;
     }
