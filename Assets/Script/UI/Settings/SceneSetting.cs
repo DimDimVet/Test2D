@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace UI
 {
@@ -14,10 +13,6 @@ namespace UI
         public int VictorySceneIndex = 2;
         [Header("OverSceneIndex")]
         public int OverSceneIndex = 3;
-        //public void ReturnMainMenu()
-        //{
-        //    SceneManager.LoadScene(MenuSceneIndex);
-        //}
     }
 }
 

@@ -6,8 +6,7 @@ namespace Healt
 {
     public class HealtExecutor : IHealt
     {
-        private Construction[] dataList, rezult;
-        private Masiv<Construction> massiv;
+        private Construction[] dataList;
         private int costCount=0;
 
         public Action<int> OnStatisticScore { get { return onStatisticScore; } set { onStatisticScore = value; } }

@@ -87,22 +87,15 @@ namespace EnemyLogic
             if (ScanGND())
             {
                 isMoveTrigger = true;
-                if (isComJamp > 0)
+                if (isComRight > 0)
                 {
-                    rbThisObject.velocity = transform.up * jampSpeed;
+                    Flip(isComRight);
+                    rbThisObject.velocity = transform.right * moveSpeed;
                 }
-                else
+                if (isComRight < 0)
                 {
-                    if (isComRight > 0)
-                    {
-                        Flip(isComRight);
-                        rbThisObject.velocity = transform.right * moveSpeed;
-                    }
-                    if (isComRight < 0)
-                    {
-                        Flip(isComRight);
-                        rbThisObject.velocity = -transform.right * moveSpeed;
-                    }
+                    Flip(isComRight);
+                    rbThisObject.velocity = -transform.right * moveSpeed;
                 }
             }
             else
@@ -126,12 +119,14 @@ namespace EnemyLogic
                 isMoveTrigger = false;
                 Flip(isComRight);
                 rbThisObject.velocity = new Vector2(1, 1) * jampSpeed;
+                isComJamp = 0;
             }
             if (isComRight < 0 && isMoveTrigger && isComJamp > 0)
             {
                 isMoveTrigger = false;
                 Flip(isComRight);
                 rbThisObject.velocity = -new Vector2(1, -1) * jampSpeed;
+                isComJamp = 0;
             }
         }
         private void SetTriggers()
@@ -143,12 +138,16 @@ namespace EnemyLogic
             else if (direction.x < 0 && direction.x < -stopDistance) { isComRight = 1; }
             else { isComRight = 0; return; }
 
-            for (int i = 0; i < JampPoint.Length; i++)
+            if (isComJamp == 0)
             {
-                directionJamp = gameObject.transform.position - JampPoint[i].transform.position;
-                if (Mathf.Abs(directionJamp.x) <= 1) { isComJamp = 1; }
-                else { isComJamp = 0; }
+                for (int i = 0; i < JampPoint.Length; i++)
+                {
+                    directionJamp = gameObject.transform.position - JampPoint[i].transform.position;
+
+                    if (Mathf.Abs(directionJamp.x) <= 1) { isComJamp = 1; }
+                }
             }
+            
         }
         private void Flip(float _scale)
         {

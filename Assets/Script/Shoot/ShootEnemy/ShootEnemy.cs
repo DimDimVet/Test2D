@@ -8,8 +8,8 @@ namespace Shoot
 {
     public class ShootEnemy : Shoot
     {
-        [SerializeField] private GameObject prefab;
         [SerializeField] private Transform poolTransform;
+        [SerializeField] private ParticleSystem particle;
         private Construction[] targets;
         private IEnemyBullPool poolBull;
         private IScanerExecutor scanerExecutor;
@@ -21,7 +21,7 @@ namespace Shoot
         }
         public override void ShootBullet()
         {
-            if (Target()) { poolBull.GetObject(gameObject.transform.localScale.x, poolTransform); }
+            if (Target()) { particle.Play(); poolBull.GetObject(gameObject.transform.localScale.x, poolTransform); }
         }
         private bool Target()
         {

@@ -8,7 +8,7 @@ namespace Bulls
         {
             return tempDirection;
         }
-        public void SetDirectionPlayer(float directionX)
+        public void SetDirectionEnemy(float directionX)
         {
             tempDirection = directionX;
         }

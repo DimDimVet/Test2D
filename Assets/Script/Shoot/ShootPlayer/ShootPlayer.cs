@@ -1,4 +1,3 @@
-using Bulls;
 using Pools;
 using UnityEngine;
 using Zenject;
@@ -9,6 +8,7 @@ namespace Shoot
     {
         [SerializeField] private GameObject prefab;
         [SerializeField] private Transform poolTransform;
+        [SerializeField] private ParticleSystem particle;
 
         private IPlayerBullPool poolBull;
         [Inject]
@@ -22,8 +22,7 @@ namespace Shoot
         }
         public override void ShootBullet()
         {
-            //CurrentCountClip--;
-
+            particle.Play();
             poolBull.GetObject(gameObject.transform.localScale.x, poolTransform);
         }
         public override void ShootBulletSleeve()

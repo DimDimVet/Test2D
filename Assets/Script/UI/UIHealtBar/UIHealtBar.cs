@@ -1,4 +1,3 @@
-using Bulls;
 using Healt;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +8,7 @@ public class UIHealtBar : MonoBehaviour
     [SerializeField] private Slider slider;
     [SerializeField] private GameObject trackingObject;
     [SerializeField] private Camera currentCamera;
-    private Vector3 flipPlus=new Vector3(1,1,1);
+    private Vector3 flipPlus = new Vector3(1, 1, 1);
     private Vector3 flipMinus = new Vector3(-1, 1, 1);
     private int thisHash;
     private Canvas canvas;
@@ -35,7 +34,7 @@ public class UIHealtBar : MonoBehaviour
     }
     private void ThisUIDamage(int getHash, int healt, int maxHealt)
     {
-        
+
         if (thisHash == getHash) { SetUIDamage(healt, maxHealt); }
     }
     private void SetUIDamage(int healt, int maxHealt)

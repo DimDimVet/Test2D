@@ -1,4 +1,3 @@
-using Bulls;
 using UnityEngine;
 
 namespace Healt
@@ -10,8 +9,6 @@ namespace Healt
         public int HealtCount = 1000;
         [Header("Стоимость объекта")]
         public int CostObject = 1;
-        [Header("Событие по типу пуль")]
-        public TypeBullet[] TypeBullets;
     }
 }
 

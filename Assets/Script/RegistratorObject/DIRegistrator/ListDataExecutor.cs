@@ -25,7 +25,7 @@ namespace RegistratorObject
             listData.Clear();
             if (listData.Count == 0) { return true; } else { return false; }
         }
-        //
+
         public Construction[] SetList()
         {
             Masiv<Construction> tempMassiv = new Masiv<Construction>();

@@ -1,4 +1,3 @@
-using PlasticPipe.PlasticProtocol.Server.Stubs;
 using RegistratorObject;
 using UnityEngine;
 using Zenject;
@@ -67,15 +66,14 @@ namespace Loot
         }
         private void FindPlayer(int hash)
         {
-            if (hash == 0 || dataList==null) { return; }
+            if (hash == 0 || dataList == null) { return; }
 
             for (int i = 0; i < dataList.Length; i++)
             {
-                if (dataList[i].Hash==hash & dataList[i].TypeObject == TypeObject.Player) 
-                { Executor(dataList[i]);}
+                if (dataList[i].Hash == hash & dataList[i].TypeObject == TypeObject.Player)
+                { Executor(dataList[i]); ReternLoot(); }
             }
-            ReternLoot();
-            
+
         }
         public virtual void Executor(Construction player)
         {

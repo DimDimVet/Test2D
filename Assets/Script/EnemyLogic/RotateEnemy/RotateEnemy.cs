@@ -1,7 +1,6 @@
 using Healt;
 using RegistratorObject;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Zenject;
 
 namespace EnemyLogic
@@ -101,7 +100,7 @@ namespace EnemyLogic
         private void Flip(Vector2 direction)
         {
             scale = transform.localScale;
-            if (direction.x > 0){scale.x = 1;}
+            if (direction.x > 0) { scale.x = 1; }
             else { scale.x = -1; }
             transform.localScale = scale;
         }

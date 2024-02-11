@@ -102,7 +102,6 @@ namespace UI
             }
             screenDropdown.AddOptions(textScreen);
 
-            //покажем текущее значение в дропе
             for (int i = 0; i < resolutions.Length; i++)
             {
                 if (resolutions[i].width == currentScreen.width & resolutions[i].height == currentScreen.height)

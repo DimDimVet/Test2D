@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShootEnemySettings
   m_EditorClassIdentifier: 
   CurrentTime: 0.5
-  MaxCountClip: 1
-  CurrentTimeClip: 1
+  MaxCountClip: 2
+  CurrentTimeClip: 2
   ModeShoot: 1
   IsUpDate: 0

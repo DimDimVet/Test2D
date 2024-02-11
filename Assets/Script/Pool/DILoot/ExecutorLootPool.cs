@@ -1,18 +1,38 @@
-using Pools;
+using Loot;
+using UnityEngine;
 using Zenject;
 
-namespace Loot
+namespace Pools
 {
-    public class ExecutorLootPool
+    public class ExecutorLootPool : ILootPool
     {
         private Pool pool;
-        private IHealtLoot healtLoot;
         [Inject]
         private HealtLoot.Factory healtLootFactory;
-        [Inject]
-        public void Init(IHealtLoot _healtLoot)
+
+        private void AddPull(Transform containerTransform)
         {
-            healtLoot = _healtLoot;
+            HealtLoot rezult = healtLootFactory.Create();
+            pool = new Pool(rezult.gameObject, containerTransform, true);
+        }
+
+        public GameObject GetObject(float direction, Transform containerTransform)
+        {
+            if (pool == null) { AddPull(containerTransform); }
+            GameObject tempGameObject = pool.GetObjectFabric(containerTransform);
+
+            if (tempGameObject != null) { return tempGameObject; }
+            else
+            {
+                HealtLoot rezult = healtLootFactory.Create();
+                pool.NewObjectQueue(rezult.gameObject);
+                return pool.GetObjectFabric(containerTransform);
+            }
+        }
+
+        public void ReternObject(int _hash)
+        {
+            pool.ReternObject(_hash);
         }
     }
 }

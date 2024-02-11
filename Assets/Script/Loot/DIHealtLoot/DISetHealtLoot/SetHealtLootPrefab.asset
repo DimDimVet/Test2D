@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SetHealtLootPrefab
   m_EditorClassIdentifier: 
   HealtLootPrefab:
-    SetObject: {fileID: 0}
+    SetObject: {fileID: 6760724032136411377, guid: 724a78b46b91c3040a7a6286d3dceff7, type: 3}

@@ -332,6 +332,33 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2257420177684123493, guid: 30ca9ac6ff0743c419c9fc535304c99b, type: 3}
   m_PrefabInstance: {fileID: 482924555}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &482924557 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 647195516527721284, guid: 30ca9ac6ff0743c419c9fc535304c99b, type: 3}
+  m_PrefabInstance: {fileID: 482924555}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &482924558 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1856652341996336607, guid: 30ca9ac6ff0743c419c9fc535304c99b, type: 3}
+  m_PrefabInstance: {fileID: 482924555}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &482924559 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2700230827840569639, guid: 30ca9ac6ff0743c419c9fc535304c99b, type: 3}
+  m_PrefabInstance: {fileID: 482924555}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &529193426
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -891,9 +918,9 @@ MonoBehaviour:
   sceneSetting: {fileID: 11400000, guid: 8a43bb0913660af44ba163b823302075, type: 2}
   audioSetting: {fileID: 11400000, guid: f2a06d5c3cf4fe9488b5aa28eec75f90, type: 2}
   textSetting: {fileID: 11400000, guid: 1b43f593e6e74784483e153ed4acf444, type: 2}
-  returnButton: {fileID: 0}
-  thisPanel: {fileID: 0}
-  text: {fileID: 0}
+  returnButton: {fileID: 482924559}
+  thisPanel: {fileID: 482924558}
+  text: {fileID: 482924557}
 --- !u!1 &1770683276
 GameObject:
   m_ObjectHideFlags: 3

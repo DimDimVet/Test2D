@@ -1,7 +1,4 @@
-using EnemyLogic;
 using Healt;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -10,10 +7,15 @@ namespace Dead
     public class DeadEnemy : MonoBehaviour
     {
         [SerializeField] private float killTime;
+
+        [Header("Скорость прыжка"), Range(0, 20)]
+        [SerializeField] private float jampSpeed;
+
         private Rigidbody2D rigidBody;
         private Collider2D colliderObject;
         private float defaultTime;
         private int thisHash;
+        private bool isMoveTrigger = false;
         private bool isDead = false, isStopRun = false;
 
         private IHealt healtExecutor;
@@ -33,8 +35,8 @@ namespace Dead
         private void SetSettings()
         {
             thisHash = gameObject.GetHashCode();
-            rigidBody =GetComponent<Rigidbody2D>();
-            colliderObject=GetComponent<Collider2D>();
+            rigidBody = GetComponent<Rigidbody2D>();
+            colliderObject = GetComponent<Collider2D>();
 
         }
         void Update()
@@ -44,9 +46,9 @@ namespace Dead
         }
         private void IsDead(int getHash, bool _isDead)
         {
-            if (thisHash == getHash) 
+            if (thisHash == getHash)
             {
-                isDead = _isDead; 
+                isDead = _isDead;
                 rigidBody.freezeRotation = false;
             }
         }
@@ -54,14 +56,16 @@ namespace Dead
         {
             if (isDead)
             {
+                if (!isMoveTrigger) { rigidBody.velocity = new Vector2(0, 1) * jampSpeed; isMoveTrigger = !isMoveTrigger; }
+
                 killTime -= Time.deltaTime;
                 if (killTime <= 2)
                 {
-                    colliderObject.enabled=false; 
+                    colliderObject.enabled = false;
                 }
                 if (killTime <= 0)
                 {
-                    killTime = defaultTime; gameObject.SetActive(false);    
+                    killTime = defaultTime; gameObject.SetActive(false);
                 }
             }
         }

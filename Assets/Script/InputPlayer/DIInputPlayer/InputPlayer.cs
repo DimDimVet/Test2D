@@ -39,10 +39,6 @@ namespace Input
                     inputActions.KeyMap.Jamp.started += context => { inputData.Jamp = context.ReadValue<float>(); Updata(); };
                     inputActions.KeyMap.Jamp.performed += context => { inputData.Jamp = context.ReadValue<float>(); Updata(); };
                     inputActions.KeyMap.Jamp.canceled += context => { inputData.Jamp = context.ReadValue<float>(); Updata(); };
-
-                    //inputActions.KeyMap.Mode.started += context => { inputData.Mode = context.ReadValue<float>();  };
-                    //inputActions.KeyMap.Mode.performed += context => { inputData.Mode = context.ReadValue<float>(); };
-                    //inputActions.KeyMap.Mode.canceled += context => { inputData.Mode = context.ReadValue<float>(); };
                 }
                 //Карта UI
                 {

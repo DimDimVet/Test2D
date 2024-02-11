@@ -6,7 +6,5 @@ namespace EnemyLogic
     {
         Construction[] GetRezultScaner(int thisHash);
         void SetRezultScaner(Construction[] _rezult, int thisHash);
-        //void LossTarget();
-        //bool ControlLoss();
     }
 }

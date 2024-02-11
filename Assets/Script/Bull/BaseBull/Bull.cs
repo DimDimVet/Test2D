@@ -1,15 +1,7 @@
-using Codice.Utils;
 using Healt;
-using Input;
-using Pools;
 using RegistratorObject;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 using Zenject;
-using static UnityEngine.UI.CanvasScaler;
 
 namespace Bulls
 {
@@ -30,12 +22,10 @@ namespace Bulls
         [SerializeField] private BulletSettings settings;
         public bool IsForwardPlus { get { return isForwardPlus; } set { isForwardPlus = value; } }
         private Rigidbody2D rbThisObject;
-        private Collider2D collThisObject;
         private TypeBullet typeBullet;
-        private TypeTarget[] typeTarget;
         private float speedBullet;
         private float killTime, defaultTime;
-        private float damage, percentDamage;
+        private int damage;
         private bool isBullKill = true, isShootTriger = true;
         private bool isForwardPlus = true;
         private RaycastHit2D[] hit;
@@ -62,19 +52,16 @@ namespace Bulls
         {
             thisHash = gameObject.GetHashCode();
             typeBullet = settings.TypeBullet;
-            typeTarget = settings.TypeTarget;
             speedBullet = settings.SpeedBullet;
             killTime = settings.KillTime;
             defaultTime = settings.KillTime;
             damage = settings.Damage;
-            percentDamage = settings.PercentDamage;
             diametrColl = settings.DiametrColl;
         }
         private void GetRun()
         {
             if (!isRun)
             {
-                collThisObject = GetComponent<Collider2D>();
                 rbThisObject = GetComponent<Rigidbody2D>();
                 if (!(rbThisObject is Rigidbody2D)) { this.gameObject.AddComponent<Rigidbody2D>(); }
 
@@ -88,7 +75,6 @@ namespace Bulls
         {
             if (isStopRun) { return; }
             if (!isRun) { GetRun(); }
-            if (settings.IsUpDate) { SetSettings(); settings.IsUpDate = false; }
             MoveBull();
         }
         private void MoveBull()
@@ -139,7 +125,7 @@ namespace Bulls
                 {
                     tempHash = hit[i].collider.gameObject.GetHashCode();
                     if (tempHash == thisHash) { return false; }
-                    if (tempHash != 0) { healtExecutor.SetDamage(tempHash, 1); return true; }
+                    if (tempHash != 0) { healtExecutor.SetDamage(tempHash, damage); return true; }
                 }
             }
 

@@ -58,7 +58,6 @@ namespace Input
                 if (inputData.Updata().Jamp > 0)
                 {
                     rbThisObject.velocity = transform.up * jampSpeed;
-                    //rbThisObject.AddForce(transform.up * jampSpeed, ForceMode2D.Impulse);
                 }
                 else
                 {
@@ -82,15 +81,12 @@ namespace Input
                     isMoveTrigger = false;
                     if (scale.x == -1 && inputData.Updata().Move.x > 0) { Flip(); }
                     rbThisObject.velocity = transform.right * jampSpeed;
-                    //rbThisObject.AddForce(transform.right * moveSpeed / 2, ForceMode2D.Impulse);
                 }
                 if (inputData.Updata().Move.x < 0 && isMoveTrigger )
                 {
                     isMoveTrigger = false;
                     if (scale.x == 1 && inputData.Updata().Move.x < 0) { Flip(); }
                     rbThisObject.velocity = -transform.right * jampSpeed;
-                    
-                    //rbThisObject.AddForce(-transform.right * moveSpeed / 2, ForceMode2D.Impulse);
                 }
 
             }
@@ -100,15 +96,12 @@ namespace Input
                 isMoveTrigger = false;
                 if (scale.x == -1 && inputData.Updata().Move.x > 0) { Flip(); }
                 rbThisObject.velocity = new Vector2(1, 1) * jampSpeed;
-                //rbThisObject.AddForce(transform.right * moveSpeed / 2, ForceMode2D.Impulse);
             }
             if (inputData.Updata().Move.x < 0 && isMoveTrigger && inputData.Updata().Jamp > 0)
             {
                 isMoveTrigger = false;
                 if (scale.x == 1 && inputData.Updata().Move.x < 0) { Flip(); }
                 rbThisObject.velocity = -new Vector2(1, -1) * jampSpeed;
-
-                //rbThisObject.AddForce(-transform.right * moveSpeed / 2, ForceMode2D.Impulse);
             }
 
         }

@@ -18,14 +18,14 @@ public class ExecutorPlayerBullPool : IPlayerBullPool
     public void AddPull(GameObject prefab, Transform containerTransform)
     {
         Bull rezult = bullFactory.Create();
-        //pool = new Pool(prefab, containerTransform);
         pool = new Pool(rezult.gameObject, containerTransform, true);
     }
 
     public GameObject GetObject(float direction, Transform containerTransform)
     {
         playerBull.SetDirectionPlayer(direction);
-        var tempGameObject = pool.GetObjectFabric(containerTransform);
+        GameObject tempGameObject = pool.GetObjectFabric(containerTransform);
+
         if (tempGameObject != null) { return tempGameObject; }
         else
         {

@@ -13,10 +13,7 @@ MonoBehaviour:
   m_Name: PlayerBulletSettings
   m_EditorClassIdentifier: 
   TypeBullet: 1
-  TypeTarget: 0100000002000000
   SpeedBullet: 15
   KillTime: 3
   DiametrColl: 0.05
-  Damage: 25
-  PercentDamage: 50
-  IsUpDate: 0
+  Damage: 5

@@ -18,16 +18,16 @@ public class ExecutorEnemyBullPool : IEnemyBullPool
     private void AddPull(Transform containerTransform)
     {
         Bull rezult = bullFactory.Create();
-        //pool = new Pool(prefab, containerTransform);
         pool = new Pool(rezult.gameObject, containerTransform, true);
     }
 
     public GameObject GetObject(float direction, Transform containerTransform)
     {
         if (pool == null) { AddPull(containerTransform); }
-        Vector3 vector = containerTransform.position;
-        enemyBull.SetDirectionPlayer(direction);
-        if (pool.GetObjectFabric(containerTransform) != null) { return pool.GetObjectFabric(containerTransform); }
+        enemyBull.SetDirectionEnemy(direction);
+        GameObject tempGameObject = pool.GetObjectFabric(containerTransform);
+
+        if (tempGameObject != null) { return tempGameObject; }
         else
         {
             Bull rezult = bullFactory.Create();
